@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mesa Redonda del Taller</title>
+<meta name="description" content="La mesa donde las decisiones grandes de la fábrica se contrastan antes de ejecutarse: quién es quién y qué se ha decidido.">
+<meta name="theme-color" content="#0e1a2b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mesa Redonda">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+  :root{ --navy:#0e1a2b; --blue:#1f5fa8; --ink:#22303f; --mut:#5b6b7c; --line:#dde4ec; --ice:#f2f5f7; --gold:#c9a227; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:-apple-system,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif; color:var(--ink); background:#fff; }
+  header{ background:var(--navy); color:#fff; padding:28px 20px 22px; }
+  header .wrap{ max-width:880px; margin:0 auto; }
+  h1{ font-size:26px; margin:0 0 6px; letter-spacing:.2px; }
+  header p{ margin:0; color:#c7d3e0; font-size:15px; line-height:1.45; }
+  main{ max-width:880px; margin:0 auto; padding:22px 20px 48px; }
+  h2{ font-size:13px; text-transform:uppercase; letter-spacing:1.6px; color:var(--blue); margin:30px 0 12px; }
+  h2:first-child{ margin-top:0; }
+  .rules{ display:grid; gap:10px; }
+  .rule{ background:var(--ice); border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:15px; line-height:1.5; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
+  .card{ border:1px solid var(--line); border-radius:14px; padding:14px 16px; background:#fff; }
+  .card .nm{ font-size:18px; font-weight:700; color:var(--navy); }
+  .card .rol{ color:var(--blue); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.8px; margin:2px 0 8px; }
+  .card .area{ font-size:14px; line-height:1.5; color:var(--ink); }
+  .badge{ display:inline-block; margin-top:10px; font-size:12px; font-weight:600; padding:3px 9px; border-radius:999px; border:1px solid var(--line); color:var(--mut); background:var(--ice); }
+  .badge.new{ color:#7a5c00; background:#fdf6dd; border-color:#ecd98a; }
+  .note{ font-size:14px; color:var(--mut); line-height:1.55; border-left:3px solid var(--gold); padding:4px 0 4px 12px; margin-top:14px; }
+  .acta{ border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:12px; background:#fff; }
+  .acta .hd{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:baseline; }
+  .acta .tp{ font-size:17px; font-weight:700; color:var(--navy); }
+  .acta .fc{ color:var(--mut); font-size:13px; }
+  .acta p{ font-size:14.5px; line-height:1.55; margin:8px 0 0; }
+  .acta .lb{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--blue); margin-top:12px; }
+  .acta ul{ margin:6px 0 0; padding-left:18px; font-size:14px; line-height:1.55; }
+  .empty{ border:1px dashed var(--line); border-radius:14px; padding:18px; color:var(--mut); font-size:15px; line-height:1.55; background:var(--ice); }
+  .err{ color:#8a1f1f; }
+  footer{ border-top:1px solid var(--line); padding:18px 20px 30px; color:var(--mut); font-size:13px; }
+  footer .wrap{ max-width:880px; margin:0 auto; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>🏭 Mesa Redonda del Taller</h1>
+    <p>El comité donde las decisiones grandes de la fábrica se contrastan <strong>antes</strong> de ejecutarse. Aquí ves quién es quién y qué se ha decidido, sin entrar al debate.</p>
+  </div>
+</header>
+<main>
+  <h2>Cómo funciona</h2>
+  <div class="rules">
+    <div class="rule">La mesa sesiona <strong>escrita y por turnos</strong>, solo para decisiones grandes: arquitectura, migraciones, seguridad y permisos, dinero, publicaciones — y tras un incidente.</div>
+    <div class="rule">La mesa <strong>opina y no manda</strong>: los veredictos los firma solo Ian, y lo de Nivel A sube a Luis con los desacuerdos escritos.</div>
+    <div class="rule">Cada sesión cierra con un <strong>acta de una página</strong>: posiciones, disensos, decisión y dueño. Todo queda registrado en la base de datos.</div>
+  </div>
+
+  <h2>El censo — quién es quién</h2>
+  <div class="grid" id="censo"><div class="empty">Cargando el censo…</div></div>
+  <p class="note">Los <strong>testigos</strong> — quien construyó una pieza concreta — no tienen silla fija: entran cuando la decisión depende de su dato, responden y salen. En total: <strong>7 asientos</strong>.</p>
+
+  <h2>Actas — qué se ha decidido</h2>
+  <div id="actas"><div class="empty">Cargando las actas…</div></div>
+</main>
+<footer>
+  <div class="wrap">Mesa Redonda del Taller · Fundada el 6 de noviembre de 2026 · Piloto: viernes 13 y 20 de noviembre de 2026.</div>
+</footer>
+<script>
+  var SB_URL = "https://yzhbjelzkjgdthnbnsaa.supabase.co";
+  var SB_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6aGJqZWx6a2pnZHRobmJuc2FhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQwMTc2MzAsImV4cCI6MjEwOTU5MzYzMH0.hJdEOQr_X0ESYgqcH1oom6CWbpk7sxV49B8nQbIIkGE";
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function get(path){
+    return fetch(SB_URL + "/rest/v1/" + path, { headers: { "apikey": SB_ANON, "Authorization": "Bearer " + SB_ANON } })
+      .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+  }
+  function fechaLinda(iso){
+    try{ return new Date(iso + "T12:00:00").toLocaleDateString("es-ES", { weekday:"long", day:"numeric", month:"long", year:"numeric" }); }
+    catch(e){ return iso; }
+  }
+  get("miembros?select=nombre,rol,area,tipo,estado,orden&order=orden.asc")
+    .then(function(rows){
+      document.getElementById("censo").innerHTML = rows.map(function(m){
+        var nuevo = m.estado.indexOf("Nace") === 0;
+        return '<div class="card"><div class="nm">' + esc(m.nombre) + '</div><div class="rol">' + esc(m.rol) + '</div>' +
+               '<div class="area">' + esc(m.area) + '</div>' +
+               '<span class="badge' + (nuevo ? " new" : "") + '">' + esc(m.estado) + '</span></div>';
+      }).join("");
+    })
+    .catch(function(e){
+      document.getElementById("censo").innerHTML = '<div class="empty err">No se pudo cargar el censo (' + esc(e.message) + '). Revisa tu conexión e inténtalo de nuevo.</div>';
+    });
+  get("actas?select=numero,fecha,tema,decision,dueno,posiciones,disensos,medicion&order=numero.desc")
+    .then(function(rows){
+      var box = document.getElementById("actas");
+      if(!rows.length){
+        box.innerHTML = '<div class="empty">Todavía no hay actas. La primera llega con la <strong>sesión piloto del viernes 13 de noviembre de 2026</strong>.</div>';
+        return;
+      }
+      box.innerHTML = rows.map(function(a){
+        var pos = (a.posiciones || []).map(function(p){
+          return "<li><strong>" + esc(p.nombre) + ":</strong> " + esc(p.posicion) + (p.evidencia ? ' <span style="color:#5b6b7c">(' + esc(p.evidencia) + ")</span>" : "") + "</li>";
+        }).join("");
+        return '<div class="acta"><div class="hd"><span class="tp">Acta #' + a.numero + " · " + esc(a.tema) + '</span><span class="fc">' + esc(fechaLinda(a.fecha)) + "</span></div>" +
+          (pos ? '<div class="lb">Posiciones</div><ul>' + pos + "</ul>" : "") +
+          (a.disensos ? '<div class="lb">Disensos</div><p>' + esc(a.disensos) + "</p>" : "") +
+          '<div class="lb">Decisión</div><p>' + esc(a.decision) + "</p>" +
+          "<p><strong>Dueño:</strong> " + esc(a.dueno) + "</p>" +
+          (a.medicion ? '<div class="lb">Medición</div><p>' + esc(a.medicion) + "</p>" : "") +
+          "</div>";
+      }).join("");
+    })
+    .catch(function(e){
+      document.getElementById("actas").innerHTML = '<div class="empty err">No se pudieron cargar las actas (' + esc(e.message) + ').</div>';
+    });
+</script>
+</body>
+</html>
