@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mesa Redonda del Taller</title>
-<meta name="description" content="La mesa donde las decisiones grandes de la fábrica se contrastan antes de ejecutarse: quién es quién y qué se ha decidido.">
+<meta name="description" content="La mesa donde las decisiones grandes de la fábrica se contrastan antes de ejecutarse: los temas, las deliberaciones completas y las decisiones.">
 <meta name="theme-color" content="#0e1a2b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -22,10 +22,31 @@
   h1{ font-size:26px; margin:0 0 6px; letter-spacing:.2px; }
   header p{ margin:0; color:#c7d3e0; font-size:15px; line-height:1.45; }
   main{ max-width:880px; margin:0 auto; padding:22px 20px 48px; }
-  h2{ font-size:13px; text-transform:uppercase; letter-spacing:1.6px; color:var(--blue); margin:30px 0 12px; }
+  h2{ font-size:13px; text-transform:uppercase; letter-spacing:1.6px; color:var(--blue); margin:32px 0 12px; }
   h2:first-child{ margin-top:0; }
   .rules{ display:grid; gap:10px; }
   .rule{ background:var(--ice); border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:15px; line-height:1.5; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 14px; }
+  .chip{ appearance:none; border:1px solid var(--line); background:#fff; color:var(--ink); font-size:13.5px; font-weight:600; padding:7px 13px; border-radius:999px; cursor:pointer; }
+  .chip.on{ background:var(--navy); color:#fff; border-color:var(--navy); }
+  .sesion{ border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:12px; background:#fff; }
+  .sesion .hd{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:baseline; }
+  .sesion .tp{ font-size:17px; font-weight:700; color:var(--navy); }
+  .sesion .fc{ color:var(--mut); font-size:13px; }
+  .ptag{ display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--blue); background:var(--ice); border:1px solid var(--line); padding:2px 8px; border-radius:999px; margin-bottom:8px; }
+  .sesion p{ font-size:14.5px; line-height:1.55; margin:8px 0 0; }
+  .sesion details{ margin-top:12px; }
+  .sesion summary{ cursor:pointer; font-weight:700; color:var(--blue); font-size:14.5px; padding:6px 0; }
+  .turno{ border-left:3px solid var(--line); padding:8px 0 8px 12px; margin-top:10px; }
+  .turno .who{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .who .nm{ font-weight:700; color:var(--navy); font-size:14.5px; }
+  .clase{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; padding:2px 8px; border-radius:999px; background:var(--ice); border:1px solid var(--line); color:var(--mut); }
+  .clase.objecion{ color:#8a1f1f; background:#fbeeee; border-color:#eec5c5; }
+  .clase.cierre{ color:#7a5c00; background:#fdf6dd; border-color:#ecd98a; }
+  .turno .tx{ font-size:14.5px; line-height:1.6; margin-top:4px; }
+  .turno .ev{ font-size:12.5px; color:var(--mut); margin-top:3px; }
+  .decision{ background:var(--ice); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-top:14px; font-size:14.5px; line-height:1.55; }
+  .decision .lb{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--blue); }
   .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
   .card{ border:1px solid var(--line); border-radius:14px; padding:14px 16px; background:#fff; }
   .card .nm{ font-size:18px; font-weight:700; color:var(--navy); }
@@ -51,7 +72,7 @@
 <header>
   <div class="wrap">
     <h1>🏭 Mesa Redonda del Taller</h1>
-    <p>El comité donde las decisiones grandes de la fábrica se contrastan <strong>antes</strong> de ejecutarse. Aquí ves quién es quién y qué se ha decidido, sin entrar al debate.</p>
+    <p>El comité donde las decisiones grandes de la fábrica se contrastan <strong>antes</strong> de ejecutarse. Aquí ves los temas, <strong>todo lo que se dijo</strong> en cada deliberación y la decisión final, por proyecto.</p>
   </div>
 </header>
 <main>
@@ -59,14 +80,18 @@
   <div class="rules">
     <div class="rule">La mesa sesiona <strong>escrita y por turnos</strong>, solo para decisiones grandes: arquitectura, migraciones, seguridad y permisos, dinero, publicaciones — y tras un incidente.</div>
     <div class="rule">La mesa <strong>opina y no manda</strong>: los veredictos los firma solo Ian, y lo de Nivel A sube a Luis con los desacuerdos escritos.</div>
-    <div class="rule">Cada sesión cierra con un <strong>acta de una página</strong>: posiciones, disensos, decisión y dueño. Todo queda registrado en la base de datos.</div>
+    <div class="rule">Cada sesión queda <strong>registrada completa en la base de datos</strong>: el tema, la categoría del proyecto, lo que dijo cada participante y el acta con la decisión.</div>
   </div>
+
+  <h2>Temas y deliberaciones</h2>
+  <div class="chips" id="chips"></div>
+  <div id="sesiones"><div class="empty">Cargando las sesiones…</div></div>
 
   <h2>El censo — quién es quién</h2>
   <div class="grid" id="censo"><div class="empty">Cargando el censo…</div></div>
   <p class="note">Los <strong>testigos</strong> — quien construyó una pieza concreta — no tienen silla fija: entran cuando la decisión depende de su dato, responden y salen. En total: <strong>7 asientos</strong>.</p>
 
-  <h2>Actas — qué se ha decidido</h2>
+  <h2>Actas — las decisiones</h2>
   <div id="actas"><div class="empty">Cargando las actas…</div></div>
 </main>
 <footer>
@@ -75,6 +100,11 @@
 <script>
   var SB_URL = "https://yzhbjelzkjgdthnbnsaa.supabase.co";
   var SB_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6aGJqZWx6a2pnZHRobmJuc2FhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQwMTc2MzAsImV4cCI6MjEwOTU5MzYzMH0.hJdEOQr_X0ESYgqcH1oom6CWbpk7sxV49B8nQbIIkGE";
+  var PROYECTOS = ["Wrapaper", "Ticix", "Árbol", "Tésera", "EA Nature", "Webs", "Taller"];
+  var CLASES = { posicion: "Posición", objecion: "Objeción", respuesta: "Respuesta", testimonio: "Testimonio", cierre: "Cierre" };
+  var filtro = "Todos";
+  var DATA = { sesiones: [], intervenciones: [], actas: [] };
+
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
   function get(path){
     return fetch(SB_URL + "/rest/v1/" + path, { headers: { "apikey": SB_ANON, "Authorization": "Bearer " + SB_ANON } })
@@ -84,6 +114,81 @@
     try{ return new Date(iso + "T12:00:00").toLocaleDateString("es-ES", { weekday:"long", day:"numeric", month:"long", year:"numeric" }); }
     catch(e){ return iso; }
   }
+
+  function renderChips(){
+    var all = ["Todos"].concat(PROYECTOS);
+    document.getElementById("chips").innerHTML = all.map(function(p){
+      var n = p === "Todos" ? DATA.sesiones.length : DATA.sesiones.filter(function(s){ return s.proyecto === p; }).length;
+      return '<button class="chip' + (filtro === p ? " on" : "") + '" data-p="' + esc(p) + '">' + esc(p) + (n ? " · " + n : "") + "</button>";
+    }).join("");
+    Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(ch){
+      ch.addEventListener("click", function(){ filtro = ch.getAttribute("data-p"); renderChips(); renderSesiones(); });
+    });
+  }
+
+  function renderSesiones(){
+    var box = document.getElementById("sesiones");
+    var lista = DATA.sesiones.filter(function(s){ return filtro === "Todos" || s.proyecto === filtro; });
+    if(!DATA.sesiones.length){
+      box.innerHTML = '<div class="empty">Todavía no hay sesiones registradas. La primera — con su tema y su deliberación completa — llega con la <strong>sesión piloto del viernes 13 de noviembre de 2026</strong>.</div>';
+      return;
+    }
+    if(!lista.length){
+      box.innerHTML = '<div class="empty">Todavía no hay sesiones de <strong>' + esc(filtro) + "</strong>. Elige otra categoría o «Todos».</div>";
+      return;
+    }
+    box.innerHTML = lista.map(function(s){
+      var turns = DATA.intervenciones.filter(function(t){ return t.sesion_id === s.id; });
+      var acta = null;
+      DATA.actas.forEach(function(a){ if(a.sesion_id === s.id) acta = a; });
+      var delib = turns.length ? turns.map(function(t){
+        return '<div class="turno"><div class="who"><span class="nm">' + esc(t.asiento) + '</span><span class="clase ' + esc(t.clase) + '">' + esc(CLASES[t.clase] || t.clase) + '</span></div>' +
+               '<div class="tx">' + esc(t.texto) + "</div>" +
+               (t.evidencia ? '<div class="ev">Fuente: ' + esc(t.evidencia) + "</div>" : "") + "</div>";
+      }).join("") : '<p style="color:#5b6b7c">La deliberación de esta sesión aún no está registrada.</p>';
+      return '<div class="sesion"><span class="ptag">' + esc(s.proyecto) + '</span>' +
+        '<div class="hd"><span class="tp">Sesión #' + s.numero + " · " + esc(s.tema) + '</span><span class="fc">' + esc(fechaLinda(s.fecha)) + "</span></div>" +
+        (s.contexto ? "<p>" + esc(s.contexto) + "</p>" : "") +
+        "<details><summary>Ver la deliberación completa (" + turns.length + " intervenciones)</summary>" + delib + "</details>" +
+        (acta ? '<div class="decision"><span class="lb">Decisión del acta</span><br>' + esc(acta.decision) + "<br><strong>Dueño:</strong> " + esc(acta.dueno) + (acta.disensos ? "<br><strong>Disensos:</strong> " + esc(acta.disensos) : "") + "</div>" : "") +
+        "</div>";
+    }).join("");
+  }
+
+  function cargarSesiones(){
+    Promise.all([
+      get("sesiones?select=id,numero,fecha,proyecto,tema,contexto&order=numero.desc"),
+      get("intervenciones?select=sesion_id,orden,asiento,clase,texto,evidencia&order=sesion_id.asc,orden.asc"),
+      get("actas?select=id,numero,fecha,tema,decision,dueno,posiciones,disensos,medicion,sesion_id&order=numero.desc")
+    ]).then(function(res){
+      DATA.sesiones = res[0]; DATA.intervenciones = res[1]; DATA.actas = res[2];
+      renderChips(); renderSesiones(); renderActas();
+    }).catch(function(e){
+      document.getElementById("sesiones").innerHTML = '<div class="empty err">No se pudieron cargar las sesiones (' + esc(e.message) + "). Revisa tu conexión.</div>";
+    });
+  }
+
+  function renderActas(){
+    var box = document.getElementById("actas");
+    var rows = DATA.actas;
+    if(!rows.length){
+      box.innerHTML = '<div class="empty">Todavía no hay actas. La primera llega con la <strong>sesión piloto del viernes 13 de noviembre de 2026</strong>.</div>';
+      return;
+    }
+    box.innerHTML = rows.map(function(a){
+      var pos = (a.posiciones || []).map(function(p){
+        return "<li><strong>" + esc(p.nombre) + ":</strong> " + esc(p.posicion) + (p.evidencia ? ' <span style="color:#5b6b7c">(' + esc(p.evidencia) + ")</span>" : "") + "</li>";
+      }).join("");
+      return '<div class="acta"><div class="hd"><span class="tp">Acta #' + a.numero + " · " + esc(a.tema) + '</span><span class="fc">' + esc(fechaLinda(a.fecha)) + "</span></div>" +
+        (pos ? '<div class="lb">Posiciones</div><ul>' + pos + "</ul>" : "") +
+        (a.disensos ? '<div class="lb">Disensos</div><p>' + esc(a.disensos) + "</p>" : "") +
+        '<div class="lb">Decisión</div><p>' + esc(a.decision) + "</p>" +
+        "<p><strong>Dueño:</strong> " + esc(a.dueno) + "</p>" +
+        (a.medicion ? '<div class="lb">Medición</div><p>' + esc(a.medicion) + "</p>" : "") +
+        "</div>";
+    }).join("");
+  }
+
   get("miembros?select=nombre,rol,area,tipo,estado,orden&order=orden.asc")
     .then(function(rows){
       document.getElementById("censo").innerHTML = rows.map(function(m){
@@ -94,31 +199,10 @@
       }).join("");
     })
     .catch(function(e){
-      document.getElementById("censo").innerHTML = '<div class="empty err">No se pudo cargar el censo (' + esc(e.message) + '). Revisa tu conexión e inténtalo de nuevo.</div>';
+      document.getElementById("censo").innerHTML = '<div class="empty err">No se pudo cargar el censo (' + esc(e.message) + ").</div>";
     });
-  get("actas?select=numero,fecha,tema,decision,dueno,posiciones,disensos,medicion&order=numero.desc")
-    .then(function(rows){
-      var box = document.getElementById("actas");
-      if(!rows.length){
-        box.innerHTML = '<div class="empty">Todavía no hay actas. La primera llega con la <strong>sesión piloto del viernes 13 de noviembre de 2026</strong>.</div>';
-        return;
-      }
-      box.innerHTML = rows.map(function(a){
-        var pos = (a.posiciones || []).map(function(p){
-          return "<li><strong>" + esc(p.nombre) + ":</strong> " + esc(p.posicion) + (p.evidencia ? ' <span style="color:#5b6b7c">(' + esc(p.evidencia) + ")</span>" : "") + "</li>";
-        }).join("");
-        return '<div class="acta"><div class="hd"><span class="tp">Acta #' + a.numero + " · " + esc(a.tema) + '</span><span class="fc">' + esc(fechaLinda(a.fecha)) + "</span></div>" +
-          (pos ? '<div class="lb">Posiciones</div><ul>' + pos + "</ul>" : "") +
-          (a.disensos ? '<div class="lb">Disensos</div><p>' + esc(a.disensos) + "</p>" : "") +
-          '<div class="lb">Decisión</div><p>' + esc(a.decision) + "</p>" +
-          "<p><strong>Dueño:</strong> " + esc(a.dueno) + "</p>" +
-          (a.medicion ? '<div class="lb">Medición</div><p>' + esc(a.medicion) + "</p>" : "") +
-          "</div>";
-      }).join("");
-    })
-    .catch(function(e){
-      document.getElementById("actas").innerHTML = '<div class="empty err">No se pudieron cargar las actas (' + esc(e.message) + ').</div>';
-    });
+
+  cargarSesiones();
 </script>
 </body>
 </html>
