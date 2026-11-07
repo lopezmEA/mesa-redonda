@@ -151,6 +151,32 @@
 </footer>
 
 <script>
+  /* Actualización automática: al abrir (y al volver a) la app se comprueba la
+     versión publicada; si cambió, la app se recarga sola una vez. Así nunca hay
+     que borrar y re-añadir el acceso de la pantalla de inicio. */
+  var APP_VERSION = "2026-11-06.4";
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+    var yaRecargo = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function(){
+      if(yaRecargo) return; yaRecargo = true; location.reload();
+    });
+  }
+  function comprobarVersion(){
+    fetch("version.json?ts=" + Date.now(), { cache: "no-store" })
+      .then(function(r){ return r.json(); })
+      .then(function(v){
+        if(v && v.version && v.version !== APP_VERSION){
+          if(!sessionStorage.getItem("mesa-act-" + v.version)){
+            sessionStorage.setItem("mesa-act-" + v.version, "1");
+            location.reload();
+          }
+        }
+      }).catch(function(){});
+  }
+  window.addEventListener("load", comprobarVersion);
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) comprobarVersion(); });
+
   var SB_URL = "https://yzhbjelzkjgdthnbnsaa.supabase.co";
   var SB_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6aGJqZWx6a2pnZHRobmJuc2FhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQwMTc2MzAsImV4cCI6MjEwOTU5MzYzMH0.hJdEOQr_X0ESYgqcH1oom6CWbpk7sxV49B8nQbIIkGE";
   var PROYECTOS = [
